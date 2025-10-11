@@ -21,6 +21,11 @@ public class Player extends Entity {
         this.keyHandler = keyHandler;
         screenY = gp.screenWidth/2 -(gp.tileSize/2);
         screenX = gp.screenHeight/2 -(gp.tileSize/2);
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
         SetDefault();
         getPlayerImage();
     }
@@ -36,19 +41,36 @@ public class Player extends Entity {
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
             if(keyHandler.upPressed){
                 direction = "up";
-                worldY -= speed;
             }
             else if(keyHandler.downPressed){
                 direction = "down";
-                worldY += speed;
             }
             else if(keyHandler.leftPressed){
                 direction = "left";
-                worldX -= speed;
             }
             else if(keyHandler.rightPressed){
                 direction = "right";
-                worldX += speed;
+            }
+            collisionOn = false;
+            gp.collisionCheck.checkCollision(this);
+
+            if(!collisionOn)
+            {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
             }
             spriteCounter++;
             if(spriteCounter > 12)
