@@ -9,25 +9,25 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends Entity {
-    public int x;
-    public int y;
-    public int speed;
-    public String direction;
+
     public GamePanel gp;
     public KeyHandler keyHandler;
-
+    public final int screenX;
+    public final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyHandler)
     {
         this.gp = gp;
         this.keyHandler = keyHandler;
+        screenY = gp.screenWidth/2 -(gp.tileSize/2);
+        screenX = gp.screenHeight/2 -(gp.tileSize/2);
         SetDefault();
         getPlayerImage();
     }
     public void SetDefault()
     {
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
@@ -36,19 +36,19 @@ public class Player extends Entity {
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
             if(keyHandler.upPressed){
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             }
             else if(keyHandler.downPressed){
                 direction = "down";
-                y += speed;
+                worldY += speed;
             }
             else if(keyHandler.leftPressed){
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             }
             else if(keyHandler.rightPressed){
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
             spriteCounter++;
             if(spriteCounter > 12)
@@ -92,7 +92,7 @@ public class Player extends Entity {
                     img = right2;
                 break;
         }
-        g2.drawImage(img, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(img, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
     }
     public void getPlayerImage()
