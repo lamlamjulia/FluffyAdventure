@@ -5,6 +5,7 @@ import tiles.TileManager;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
+import Object.SuperObject;
 
 public class GamePanel extends JPanel implements Runnable{
     public final int originalTileSize = 16;
@@ -28,10 +29,16 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
     }
+    public void setObject()
+    {
+        assetSetter.setObject();
+    }
     Thread gameThread;
     int FPS = 60;
     TileManager tileManager = new TileManager(this);
     public CollisionCheck collisionCheck = new CollisionCheck(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
+    public SuperObject obj[] = new SuperObject[10];
     KeyHandler keyHandler = new KeyHandler();
     public Player player = new Player(this, keyHandler);
 
@@ -78,12 +85,15 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        tileManager.draw(g2d);
-        player.draw(g2d);
-        //g2d.setColor(Color.white);
-        //g2d.fillRect(playerX, playerY, tileSize, tileSize);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g;
+        tileManager.draw(g2);
+        for(int i = 0; i < obj.length; i++)
+        {
+            if(obj[i] != null)
+                obj[i].draw(g2,this);
+        }
+        player.draw(g2);
+        g2.dispose();
 
     }
 }
