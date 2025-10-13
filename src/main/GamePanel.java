@@ -4,6 +4,8 @@ import tiles.TileManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import Object.SuperObject;
 
@@ -32,12 +34,14 @@ public class GamePanel extends JPanel implements Runnable{
     public void setObject()
     {
         assetSetter.setObject();
+        playMusic(0);
     }
     Thread gameThread;
     int FPS = 60;
     TileManager tileManager = new TileManager(this);
     public CollisionCheck collisionCheck = new CollisionCheck(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+    public Sound sound = new Sound();
     public SuperObject obj[] = new SuperObject[10];
     KeyHandler keyHandler = new KeyHandler();
     public Player player = new Player(this, keyHandler);
@@ -95,5 +99,29 @@ public class GamePanel extends JPanel implements Runnable{
         player.draw(g2);
         g2.dispose();
 
+    }
+    public void playMusic(int i)
+    {
+        try {
+            sound.setFile(i);
+            sound.play();
+            sound.loop();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void stopMusic()
+    {
+        sound.stop();
+    }
+    public void playSE(int i)
+    {
+        try{
+            sound.setFile(i);
+            sound.play();
+        } catch (IOException | UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

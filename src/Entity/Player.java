@@ -99,12 +99,14 @@ public class Player extends Entity {
             switch (gp.obj[i].name)
             {
                 case "Key":
+                    gp.playSE(1);
                     hasKey++;
                     gp.obj[i] = null;
                     break;
                 case "Door":
                     if(hasKey>0)
                     {
+                        gp.playSE(2);
                         hasKey--;
                         gp.obj[i] = null;
                     }
